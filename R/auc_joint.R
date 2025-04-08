@@ -11,7 +11,7 @@
 #' @param yyy     : longitudinal response variable
 #' @param xxx     : covaruates for longitudinal data
 #'
-#' @return        : regression coefficient  반환값에 대한 설명을 추가하세요.
+#' @return        : regression coefficient  
 #'
 #' @import interval Icens stats nlme statmod
 #' @export
