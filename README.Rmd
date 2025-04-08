@@ -49,25 +49,29 @@ ttt=data2$age ## observation time at longitudinal data
 fit1<-ic_joint(data2,data2id,xx,ttt,yyy,xxx)
 gamma=fit1$gamma; betas<-fit1$beta; survt=fit1$time; ee=fit1$ee; clamb=fit1$clamb
 ## regression coeffcients (gamma, beta) at joint model
-nn=nrow(ee)
+nn=nrow(ee)   
 xp=matrix(0,nn,2)
 survp=matrix(0,nn,length(survt))
+
 ## joint AUC(s,s+th_v) , BS(s,s+th_v) : three s points(75,80,85), th_v=(3,5,7,9)
-s1=75; s2=80; s3=85
+
+s1=75; s2=80; s3=85   
 ss=c(s1,s2,s3)
 th_v=c(3,5,7,9)
+
 aucp_joint=brp_joint<-matrix(0,length(ss), length(th_v))
 
 for(i in 1:nn){
 for(j in 1:length(survt)) {
-if(data2id$TR[i]<=survt[1]) { xp0=fit1$zmat[i,1]}
+if(data2id$TR[i]<=survt[1]) { 
+       xp0=fit1$zmat[i,1]}   ### zmat[i,j] : estimated longitudinal mean values which used as a time-varying covariate in PH model.
 else { xp0=fit1$zmat[i,j]}
 survp[i,j]=exp(-clamb[j]*exp(c(xx[i,],xp0)%*%gamma))
 } }
 for(kkk in 1:3){
 s=ss[kkk]
-aucp_joint[kkk,]<-AUC_ic2(s,th_v,data2id,survp,survt,ee)$auc1[1:4]
-brp_joint[kkk,]<-brier(data2id,survt,survp,ee,s,th_v)$bs
+aucp_joint[kkk,]<-AUC_ic2(s,th_v,data2id,survp,survt,ee)$auc1[1:4]   #### dynamic AUC
+brp_joint[kkk,]<-brier(data2id,survt,survp,ee,s,th_v)$bs             ### dynamic BS
 }
 auc_jj<-data.frame(round(aucp_joint,4))
 rownames(auc_jj)<-c("s=75", "s=80","s=85")
