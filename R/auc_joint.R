@@ -2,16 +2,16 @@
 #'
 #' This function ---
 #'
-#' @description ic_joint 함수는 (설명을 추가하세요).
+#' @description ic_joint  : Estimation of joint model
 #'
-#' @param data2 데이터 프레임. (설명을 추가하세요)
-#' @param data.id 식별 정보가 포함된 데이터 프레임. (설명을 추가하세요)
-#' @param xx 설명 추가
-#' @param ttt 설명 추가
-#' @param yyy 설명 추가
-#' @param xxx 설명 추가
+#' @param data2  : datafarame for longitudinal dataset
+#' @param data.id  : dataframe for interval-censored failure time 
+#' @param xx      : covariate for failure time
+#' @param ttt     : observation time for longitudinal response
+#' @param yyy     : longitudinal response variable
+#' @param xxx     : covaruates for longitudinal data
 #'
-#' @return 반환값에 대한 설명을 추가하세요.
+#' @return        : regression coefficient  반환값에 대한 설명을 추가하세요.
 #'
 #' @import interval Icens stats nlme statmod
 #' @export
@@ -43,19 +43,21 @@ ic_joint<-function(data2,data.id,xx,ttt,yyy,xxx) {
   ####  EM algorithm  ####
   ########################
   IDD<-data2$ID
-
+  
+#### obtaining initial values for LD
   fit.lme <-nlme::lme(yyy~ttt+xxx, random=~ttt|IDD,
                  control = list(opt = "optim", optCtrl = list(maxfun = 100000)))
 
   bb <- fit.lme$coef$random$ID
   beta<-fit.lme$coef$fixed
-
   xxx2=as.matrix(xxx)
   p=ncol(xxx2)
   var1<-stats::var(bb)
   sigmasq_e.hat<-fit.lme$sigma^2
   V<-V.hat <-sigma<-var1
 
+
+  #### obtaining equivalence set for approximate likelihood for interval censored data
   fit.interval <- interval::icfit(Surv(TL,TR, type='interval2')~1)
 
   nr=ncol(fit.interval$A)  #nr=30
@@ -67,9 +69,9 @@ ic_joint<-function(data2,data.id,xx,ttt,yyy,xxx) {
 
   ##################################################
   xx=as.matrix(xx)
-
-
-  for(ii2 in 1:10){
+## gauss.hermite algorithm
+  
+ for(ii2 in 1:10){
 
     k <- 7
     gherm1 <- gherm2 <- statmod::gauss.quad(k, kind='hermite')
