@@ -346,7 +346,6 @@ ic_joint<-function(data2,data.id,xx,ttt,yyy,xxx) {
     err2=sum(abs(solve(Jacob)%*%g))
     clamb=clam=cumsum(lamb)
 
-    print(c(ii2,err1/sum(abs(beta)),err2, gamma))
     gammase=sqrt(diag(solve(Jacob)))
 
     if(min(err1/sum(abs(beta)),err2/sum(abs(gamma)))<0.001) break   ## simulation
