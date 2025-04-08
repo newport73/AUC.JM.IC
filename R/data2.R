@@ -1,7 +1,8 @@
 #' Example dataset: data2
 #'
 #' Description of data2.
-#'
+#' packages(lcmm)
+#  data(Paquid)
 #' @format A data frame with X rows and Y variables:
 #' \describe{
 #'   \item{BVRT}{Brief Visuospatial Memory Test score}
