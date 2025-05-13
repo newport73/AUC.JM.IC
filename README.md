@@ -52,11 +52,14 @@ if(data2id$TR[i]<=survt[1]) { xp0=fit1$zmat[i,1]}
 else { xp0=fit1$zmat[i,j]}
 survp[i,j]=exp(-clamb[j]*exp(c(xx[i,],xp0)%*%gamma))
 } }
+
+
 for(kkk in 1:3){
-s=ss[kkk]
-aucp_joint[kkk,]<-AUC_ic2(s,th_v,data2id,survp,survt,ee)$auc1[1:4]
-brp_joint[kkk,]<-brier(data2id,survt,survp,ee,s,th_v)$bs
-}
+  s=ss[kkk]
+  aucp_joint[kkk,]<-AUC_ic3(s,th_v,data2.id,survp,survt)$auc1[1:4]
+  brp_joint[kkk,]<-brier3(data2.id,survt,survp,s,th_v)$bs[1:4] 
+  }
+
 auc_jj<-data.frame(round(aucp_joint,4))
 rownames(auc_jj)<-c("s=75", "s=80","s=85")
 
