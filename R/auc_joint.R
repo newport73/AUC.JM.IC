@@ -247,7 +247,8 @@ ic_joint<-function(data2,data.id,xx,ttt,yyy,xxx) {
     }
     BB[1]=TOT1; BB[2]=TOT2; BB[3]=TOT3;
     if(p>1) {BB[4]=TOT4; BB[5]=TOT5}
-
+   
+    ntt=sum(nobs)
     D=ntt/2*sigmasq_e.hat^2-(TOT44)/sigmasq_e.hat^3
 
     S_INV1=sigma_be+sigma_be%*%BB%*%solve(D-t(BB)%*%sigma_be%*%BB)%*%t(BB)%*%sigma_be
